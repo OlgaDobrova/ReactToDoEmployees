@@ -37,15 +37,12 @@ class App extends Component {
       increase: false,
     };
 
-    return (e) => {
-      e.preventDefault();
-      this.setState(({ data }) => {
-        const newArr = [...data, elem];
-        return {
-          data: newArr,
-        };
-      });
-    };
+    this.setState(({ data }) => {
+      const newArr = [...data, elem];
+      return {
+        data: newArr,
+      };
+    });
   };
 
   render() {
