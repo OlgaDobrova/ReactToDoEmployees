@@ -14,9 +14,9 @@ class App extends Component {
     super(props);
     this.state = {
       data: [
-        { id: 0, name: "John C.", salary: 800, increase: false },
-        { id: 1, name: "Alex M.", salary: 3000, increase: true },
-        { id: 2, name: "Carl W.", salary: 9000, increase: false },
+        { id: 0, name: "John C.", salary: 800, increase: false, rise: true },
+        { id: 1, name: "Alex M.", salary: 3000, increase: true, rise: false },
+        { id: 2, name: "Carl W.", salary: 9000, increase: false, rise: false },
       ],
     };
   }
@@ -35,6 +35,7 @@ class App extends Component {
       name: name,
       salary: salary,
       increase: false,
+      rise: false,
     };
 
     this.setState(({ data }) => {
@@ -45,15 +46,38 @@ class App extends Component {
     });
   };
 
+  onToggleProp = (id, prop) => {
+    // здесь реализованы Клик по печеньке и Клик по имени
+    this.setState(({ data }) => ({
+      data: data.map((item) => {
+        if (item.id === id) {
+          return { ...item, [prop]: !item[prop] };
+        }
+        return item;
+      }),
+    }));
+  };
+
   render() {
+    const countEmployees = this.state.data.length;
+    const countIncrease = this.state.data.filter(
+      (item) => item.increase
+    ).length;
     return (
       <div className="app">
-        <AppInfo />
+        <AppInfo
+          countEmployees={countEmployees}
+          countIncrease={countIncrease}
+        />
         <div className="search-panel">
           <SearchPanel />
           <AppFilter />
         </div>
-        <EmployeesList data={this.state.data} onDelete={this.deleteItem} />
+        <EmployeesList
+          data={this.state.data}
+          onDelete={this.deleteItem}
+          onToggleProp={this.onToggleProp}
+        />
         <EmployeesAddForm onAdd={this.addItem} />
       </div>
     );
